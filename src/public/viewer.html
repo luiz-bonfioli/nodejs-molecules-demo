@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <title>3D Molecule Viewer (Three.js)</title>
+    <style>
+        body {
+            background-color: #fff;
+            margin: 0;
+            overflow: hidden;
+        }
+        #scene-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            padding: 1rem;
+        }
+        .molecule-scene {
+            width: 25vw;
+            height: 25vh;
+        }
+    </style>
+</head>
+<body>
+<div id="scene-container"></div>
+
+<script type="module">
+    import * as THREE from "https://unpkg.com/three@0.112/build/three.module.js";
+    import { OrbitControls } from "https://unpkg.com/three@0.112/examples/jsm/controls/OrbitControls.js";
+    import { GLTFLoader } from "https://unpkg.com/three@0.112/examples/jsm/loaders/GLTFLoader.js";
+
+    const apiURL = 'http://localhost:3000/api';
+
+    // Entry point
+    await main();
+
+    async function main() {
+        const container = document.getElementById('scene-container');
+        const molecules = await fetchMolecules();
+
+        if (!molecules?.length) return;
+
+        for (const [index, molecule] of molecules.entries()) {
+            await createMoleculeScene(container, molecule, index);
+        }
+    }
+
+    async function fetchMolecules() {
+        try {
+            const res = await fetch(`${apiURL}/molecules`);
+            if (!res.ok) throw new Error(`HTTP error ${res.status}`);
+            return await res.json();
+        } catch (err) {
+            console.error('Failed to fetch molecules:', err);
+        }
+    }
+
+    function createRenderer(width, height) {
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setSize(width, height);
+        renderer.setPixelRatio(window.devicePixelRatio);
+        return renderer;
+    }
+
+    function createCamera(width, height) {
+        const camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
+        camera.position.set(5, 5, 5);
+        return camera;
+    }
+
+    function createScene() {
+        const scene = new THREE.Scene();
+        scene.background = new THREE.Color(0xffffff);
+        scene.add(new THREE.AmbientLight(0x222222));
+
+        const light = new THREE.DirectionalLight(0xffffff, 1);
+        light.position.set(20, 20, 0);
+        scene.add(light);
+
+        return scene;
+    }
+
+    async function createMoleculeScene(container, molecule, index) {
+        const wrapper = document.createElement('div');
+        wrapper.className = 'molecule-scene';
+        wrapper.id = `scene-${index}`;
+        container.appendChild(wrapper);
+
+        const width = wrapper.clientWidth;
+        const height = wrapper.clientHeight;
+
+        const renderer = createRenderer(width, height);
+        wrapper.appendChild(renderer.domElement);
+
+        const scene = createScene();
+        const camera = createCamera(width, height);
+        const controls = new OrbitControls(camera, renderer.domElement);
+
+        await loadGLB(scene, molecule);
+
+        // Animate the scene
+        function animate() {
+            requestAnimationFrame(animate);
+            controls.update();
+            scene.rotation.x += 0.005;
+            scene.rotation.y += 0.005;
+            renderer.render(scene, camera);
+        }
+
+        animate();
+    }
+
+    async function loadGLB(scene, molecule) {
+        try {
+            const res = await fetch(`${apiURL}/molecules/${molecule.id}/model`);
+            if (!res.ok) throw new Error(`Model fetch error: ${res.status}`);
+            const arrayBuffer = await res.arrayBuffer();
+
+            const loader = new GLTFLoader();
+            loader.parse(arrayBuffer, '', gltf => {
+                scene.add(gltf.scene);
+                console.log(`Loaded model for ${molecule.name}`);
+            }, error => {
+                console.error('GLTF parse error:', error);
+            });
+        } catch (err) {
+            console.error(`Failed to load GLB for ${molecule.name}:`, err);
+        }
+    }
+</script>
+</body>
+</html>
