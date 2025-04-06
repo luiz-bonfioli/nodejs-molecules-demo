@@ -1,6 +1,26 @@
 import {NextFunction, Request, Response} from 'express';
 import {getMoleculeById, getMoleculeModelById, getMolecules} from './molecule.service';
 import {validationResult} from "express-validator";
+import {Molecule} from "./molecule.model";
+import {createMolecule} from "./molecule.repository";
+
+// Handler to create a new molecule
+export const createMoleculeHandler = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            res.status(400).json({errors: errors.array()});
+            return;
+        }
+
+        const moleculeData: Molecule = req.body;
+        const newMolecule = await createMolecule(moleculeData);
+        res.status(201).json(newMolecule);
+
+    } catch (error) {
+        next(error);
+    }
+};
 
 // Handler to get all molecules
 export const getAllMoleculesHandler = async (req: Request, res: Response, next: NextFunction) => {

@@ -22,6 +22,19 @@ This module defines the API routes for interacting with molecules and their 3D m
 
 ## Endpoints
 
+### `POST /molecules/`
+
+Creates a new molecule.
+
+#### Response Example
+```json
+{
+  "id": "1",
+  "name": "Water",
+  "model": "H2O.glb"
+}
+```
+
 ### `GET /molecules/`
 
 Returns a list of all molecules.
@@ -75,6 +88,16 @@ Returns the 3D model file (e.g., `.obj`, `.glb`, etc.) associated with the molec
 ---
 
 ## Usage Examples
+
+### Creates a new molecule with `curl`
+```bash
+curl -X POST http://localhost:3000/api/molecules \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "Water",
+    "model": "h2o.glb"
+  }'
+```
 
 ### Fetch all molecules with `curl`
 ```bash

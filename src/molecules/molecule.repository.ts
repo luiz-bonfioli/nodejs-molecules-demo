@@ -5,6 +5,22 @@ import {Molecule} from "./molecule.model";
 const prisma = new PrismaClient();
 
 /**
+ * Creates a new molecule.
+ *
+ * @param molecule - The molecule data.
+ * @returns The new molecule.
+ */
+export const createMolecule = async (molecule: Molecule): Promise<Molecule> => {
+    return await prisma.molecule.create({
+        data: {
+            id: molecule.id,
+            name: molecule.name,
+            model: molecule.model
+        }
+    }) as Molecule;
+};
+
+/**
  * Retrieves all molecules from the database.
  *
  * @returns An array of Molecule objects.

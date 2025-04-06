@@ -1,16 +1,16 @@
 import {Molecule} from './molecule.model';
-import {findMolecules, findMoleculeById} from './molecule.repository'
+import {createMolecule, findMolecules, findMoleculeById} from './molecule.repository'
 import path from "node:path";
 
-
-// In-memory mock data representing molecules
-// const molecules: Molecule[] = [
-//     {id: '1', name: 'Mol 1', model: 'glucose_molecule.glb'},
-//     {id: '2', name: 'Mol 2', model: 'water_molecule.glb'},
-//     {id: '3', name: 'Mol 3', model: 'sucrose_molecule.glb'},
-//     {id: '4', name: 'Mol 4', model: 'cpk_molecule.glb'},
-//     {id: '5', name: 'Mol 5', model: 'glucose_molecule.glb'},
-// ];
+/**
+ * Saves a new molecule.
+ *
+ * @param molecule - The molecule object.
+ * @returns The new molecule.
+ */
+export const saveMolecule = async (molecule: Molecule): Promise<Molecule> => {
+    return createMolecule(molecule);
+}
 
 /**
  * Returns the full list of molecules.
