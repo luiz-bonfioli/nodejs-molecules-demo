@@ -14,7 +14,7 @@ export const getAllMoleculesHandler = async (req: Request, res: Response, next: 
 // Handler to get a single molecule by ID
 export const getMoleculeByIdHandler = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const molecule = await getMoleculeById(req.params.id);
+        const molecule = await getMoleculeById(Number(req.params.id));
         if (molecule) {
             res.json(molecule);
         } else {
@@ -28,7 +28,7 @@ export const getMoleculeByIdHandler = async (req: Request, res: Response, next: 
 // Handler to get the 3D model file path of a molecule by ID and send the file
 export const getMoleculeModelHandler = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const modelPath = await getMoleculeModelById(req.params.id);
+        const modelPath = await getMoleculeModelById(Number(req.params.id));
         if (modelPath) {
             res.sendFile(modelPath, (err) => {
                 if (err) {

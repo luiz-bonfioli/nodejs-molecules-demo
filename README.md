@@ -93,6 +93,17 @@ curl -O http://localhost:3000/molecules/1/model
 
 ---
 
+## Database setup
+Using [Prima with SQLite](https://www.prisma.io/docs/getting-started/quickstart-sqlite) for demo purpose
+
+```bash
+npx prisma init --datasource-provider sqlite --output ../generated/prisma
+```
+```bash
+npx prisma migrate dev --name init
+```
+
+
 ## Purpose
 
 This API provides access to molecular data and 3D models, supporting applications such as:

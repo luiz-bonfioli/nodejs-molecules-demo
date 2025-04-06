@@ -1,6 +1,6 @@
 // Defines the structure of a Molecule object
 export interface Molecule {
-    id: string;
+    id: number;
     name: string;
     model: string;
 }
