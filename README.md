@@ -97,12 +97,8 @@ curl -O http://localhost:3000/molecules/1/model
 Using [Prima with SQLite](https://www.prisma.io/docs/getting-started/quickstart-sqlite) for demo purpose
 
 ```bash
-npx prisma init --datasource-provider sqlite --output ../generated/prisma
+ dotenv -e src/.env.dev  npx prisma migrate dev --name init
 ```
-```bash
-npx prisma migrate dev --name init
-```
-
 
 ## Purpose
 
