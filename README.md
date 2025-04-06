@@ -95,7 +95,7 @@ curl -X POST http://localhost:3000/api/molecules \
   -H "Content-Type: application/json" \
   -d '{
     "name": "Water",
-    "model": "h2o.glb"
+    "model": "sucrose_molecule.glb"
   }'
 ```
 
