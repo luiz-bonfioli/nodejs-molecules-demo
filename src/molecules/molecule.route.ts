@@ -4,6 +4,7 @@ import {
     getMoleculeByIdHandler,
     getMoleculeModelHandler,
 } from './molecule.controller';
+import {param} from "express-validator";
 
 const router = Router();
 
@@ -19,10 +20,14 @@ router.get('/', getAllMoleculesHandler);
 
 // GET /molecules/:id/model
 // Returns the 3D model file associated with a molecule (if available)
-router.get('/:id/model', getMoleculeModelHandler);
+router.get('/:id/model',
+    param('id').isInt().withMessage('ID must be an integer'),
+    getMoleculeModelHandler);
 
 // GET /molecules/:id
 // Returns details of a single molecule by ID
-router.get('/:id', getMoleculeByIdHandler);
+router.get('/:id',
+    param('id').isInt().withMessage('ID must be an integer'),
+    getMoleculeByIdHandler);
 
 export default router;
