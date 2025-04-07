@@ -1,5 +1,9 @@
 # Molecules demo
-Basic NodeJS code example 
+Basic NodeJS code example.
+
+### Next steps (future)
+Create a single page application using React to consume the backend APIs. 
+So far, I've just created it locally to consume the APIs, but an SPA is more powerful.
 
 ### Install dependencies
 ```shell
