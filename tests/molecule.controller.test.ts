@@ -29,7 +29,7 @@ describe('Molecule Controller', () => {
     describe('getAllMoleculesHandler', () => {
         it('should return all molecules', async () => {
             const molecules: Molecule[] = [{
-                id: '1', name: 'Water',
+                id: 1, name: 'Water',
                 model: 'model.tst'
             }];
             jest.spyOn(moleculeService, 'getMolecules').mockResolvedValue(molecules);
@@ -57,7 +57,7 @@ describe('Molecule Controller', () => {
 
     describe('getMoleculeByIdHandler', () => {
         it('should return molecule if found', async () => {
-            const molecule: Molecule = {id: '1', name: 'Methane', model: 'model.tst'};
+            const molecule: Molecule = {id: 1, name: 'Methane', model: 'model.tst'};
             jest.spyOn(moleculeService, 'getMoleculeById').mockResolvedValue(molecule);
 
             const req = mockRequest({id: '1'});
